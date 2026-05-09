@@ -48,35 +48,31 @@ class Monster:
     def __str__(self):
         print(f"{self.name} | Type: {self.type} | HP: {self.hp} | Attack: {self.attack}")
 
-def battle(player, monster):
+def battle(player, monster, difficulty):
     while (player.is_alive() and monster.is_alive()):
-        if (player.is_alive()):
+        if player.is_alive():
             print(f"{player.name} is attacking {monster.name}.")
             dmg_multiplier = (100 + random.randint(0, 20)) / 100
             dmg = int(player.attack * dmg_multiplier)
             monster.hp -= dmg
             print(f"{monster.name} takes {dmg} damage. HP: {monster.hp}")
-            if (not monster.is_alive()):
+            if not monster.is_alive():
                 print(f"{player.name} has slain {monster.name}.")
+                player.attack += difficulty
                 break
-        if (monster.is_alive()):
+        if monster.is_alive():
             print(f"{monster.name} is attacking {player.name}.")
             dmg_multiplier = (100 + random.randint(0, 15)) / 100
-            dmg = int(player.attack * dmg_multiplier)
+            dmg = int(monster.attack * dmg_multiplier)
             player.hp -= dmg
             print(f"{player.name} takes {dmg} damage. HP: {player.hp}")
-            if (not player.is_alive()):
+            if not player.is_alive():
                 print(f"{monster.name} has slain {player.name}.")
                 break
         input()
-    if (not player.is_alive() and not monster.is_alive()):
+    if not player.is_alive() and not monster.is_alive():
         print(f"By some miracle both {player.name} and the {monster.name} died.")
 
-def has_next(p1):
-    if (p1.hp > 0):
-        return True
-    else:
-        return False
 
 def main():
     p1 = Player(input("What is the player's name?"))
@@ -85,10 +81,10 @@ def main():
         difficulty = int(input("Error: difficulty must be between 1 and 10."))
     room_total = int(input("How many rooms would you like?"))
     for i in range(room_total):
-        print(f"\nRoom {i+1} of {room_total}")
-        if (has_next(p1)):
+        if p1.is_alive():
+            print(f"\nRoom {i + 1} of {room_total}")
             generate_room(p1, difficulty)
-        elif (not has_next(p1)):
+        else:
             print("Game over.")
             break
 
@@ -96,45 +92,45 @@ def generate_room(p1, difficulty):
     #Generate the rooms randomly using base enemies and weights for healing
     heal_chance = 25 - ((difficulty - 1) * 4 )
     room_code = random.randint(1, 100)
-    if (room_code <= heal_chance and not room_code == 100):
-        if ((p1.hp + 25) <= 100):
+    if room_code <= heal_chance and not room_code == 100:
+        if p1.hp == 100:
+            print(f"{p1.name} health is full.")
+        elif p1.hp + 25 <= 100:
             p1.heal(25)
-        elif((p1.hp + 25) > 100):
+        elif p1.hp + 25 > 100:
             p1.heal(100 - p1.hp)
         print(f"{p1.name} heals 25 health. HP: {p1.hp}")
-    elif (room_code == 100):
-        print(f"{p1.name} restored to full health and gained 5 attack points.")
+    elif room_code == 100:
+        print(f"{p1.name} restored to full health and gained 5 attack points.\n{p1.name} attack: {p1.attack}")
         p1.hp = 100
         p1.attack += 5
     else:
-        if (difficulty <= 3):
+        if difficulty <= 3:
             m1 = Monster("Goblin")
-            battle(p1, m1)
-        if (difficulty > 3 and difficulty <= 5):
+        elif difficulty <= 5:
             temp = random.randint(1, 2)
-            if (temp == 1):
+            if temp == 1:
                 m1 = Monster("Goblin")
-            elif (temp == 2):
+            elif temp == 2:
                 m1 = Monster("Demon")
-            battle(p1, m1)
-        if (difficulty > 5 and difficulty < 10):
+        elif difficulty <= 10:
             temp = random.randint(1, 3)
-            if (temp == 1):
+            if temp == 1:
                 m1 = Monster("Goblin")
-            elif (temp == 2):
+            elif temp == 2:
                 m1 = Monster("Demon")
-            elif (temp == 3):
+            elif temp == 3:
                 m1 = Monster("Demigod")
-            battle(p1, m1)
-        if (difficulty == 10):
+        elif difficulty == 10:
             temp = random.randint(1, 4)
-            if (temp == 1):
+            if temp == 1:
                 m1 = Monster("Goblin")
-            elif (temp == 2):
+            elif temp == 2:
                 m1 = Monster("Demon")
-            elif (temp == 3):
+            elif temp == 3:
                 m1 = Monster("Demigod")
-            elif (temp == 4):
+            elif temp == 4:
                 m1 = Monster("God")
-            battle(p1, m1)
+        battle(p1, m1, difficulty)
+
 main()
