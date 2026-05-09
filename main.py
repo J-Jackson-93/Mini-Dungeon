@@ -74,10 +74,41 @@ def main():
     #Generate the rooms randomly using base enemies and weights for healing
     heal_chance = 50 - ((difficulty - 1) * 4 )
     room_code = random.randint(1, 100)
-    if (room_code <= heal_chance):
-        p1.heal += 25
+    if (room_code <= heal_chance and not room_code == 100):
+        p1.heal(25)
+        print(f"{p1} heals 25 health. {p1} HP: {p1.hp}")
+    elif (room_code == 100):
+        print(f"{p1.name} restored to full health and gained 5 attack points.")
+        p1.hp = 100
+        p1.attack += 5
     else:
         if (difficulty <= 3):
-            battle(p1, )
-
-
+            m1 = Monster("Goblin")
+            battle(p1, m1)
+        if (difficulty > 3 and difficulty <= 5):
+            temp = random.randint(1, 2)
+            if (temp == 1):
+                m1 = Monster("Goblin")
+            elif (temp == 2):
+                m1 = Monster("Demon")
+            battle(p1, m1)
+        if (difficulty > 5 and difficulty < 10):
+            temp = random.randint(1, 3)
+            if (temp == 1):
+                m1 = Monster("Goblin")
+            elif (temp == 2):
+                m1 = Monster("Demon")
+            elif (temp == 3):
+                m1 = Monster("Demigod")
+            battle(p1, m1)
+        if (difficulty == 10):
+            temp = random.randint(1, 4)
+            if (temp == 1):
+                m1 = Monster("Goblin")
+            elif (temp == 2):
+                m1 = Monster("Demon")
+            elif (temp == 3):
+                m1 = Monster("Demigod")
+            elif (temp == 4):
+                m1 = Monster("God")
+            battle(p1, m1)
