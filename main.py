@@ -19,7 +19,6 @@ class Player:
 
     def heal(self, amount):
         self.hp += amount
-        print(f"{self.name} heals {amount} hp.")
 
     def __str__(self):
         print(f"{self.name} | HP: {self.hp} | Attack: {self.attack}")
@@ -52,11 +51,13 @@ class Monster:
 def battle(player, monster):
     while (player.is_alive() and monster.is_alive()):
         if (player.is_alive()):
-            dmg = player.attack * (random.randint(-15,15) / 100 )
-            print(f"{monster.name} takes {dmg} damage.")
+            dmg = int(player.attack * ((100 + random.randint(-15,15) / 100)))
+            monster.hp -= dmg
+            print(f"{monster.name} takes {dmg} damage. HP: {monster.hp}")
         if (monster.is_alive()):
-            dmg = monster.attack * (random.randint(-20, 20) / 100)
-            print(f"{player.name} takes {dmg} damage.")
+            dmg = int(monster.attack * ((100 + random.randint(-20, 20) / 100)))
+            player.hp -= dmg
+            print(f"{player.name} takes {dmg} damage. HP: {player.hp}")
     if (player.is_alive() and not monster.is_alive()):
         return True
     if (not player.is_alive() and monster.is_alive()):
@@ -66,17 +67,23 @@ def battle(player, monster):
 
 def main():
     p1 = Player(input("What is the player's name?"))
-    difficulty = input("How hard would you like the game to be? 1 (easiest) -> 10 (hardest)")
-    while (not isinstance(difficulty, float) or not (difficulty <= 10 and difficulty >= 1)):
-        print("Error: The number must be between 1 and 10.")
-        difficulty = input("How hard would you like the game to be? 1 (easiest) -> 10 (hardest)")
+    difficulty = int(input("How hard would you like the game to be? 1 (easiest) -> 10 (hardest)"))
+    while (isinstance(difficulty, int) and (difficulty > 10 or difficulty < 1)):
+        difficulty = int(input("Error: difficulty must be between 1 and 10."))
+    room_total = int(input("How many rooms would you like?"))
+    for i in range(room_total):
+        generate_room(p1, difficulty)
 
+def generate_room(p1, difficulty):
     #Generate the rooms randomly using base enemies and weights for healing
-    heal_chance = 50 - ((difficulty - 1) * 4 )
+    heal_chance = 25 - ((difficulty - 1) * 4 )
     room_code = random.randint(1, 100)
     if (room_code <= heal_chance and not room_code == 100):
-        p1.heal(25)
-        print(f"{p1} heals 25 health. {p1} HP: {p1.hp}")
+        if ((p1.hp + 25) <= 100):
+            p1.heal(25)
+        elif((p1.hp + 25) > 100):
+            p1.heal(100 - p1.hp)
+        print(f"{p1.name} heals 25 health. HP: {p1.hp}")
     elif (room_code == 100):
         print(f"{p1.name} restored to full health and gained 5 attack points.")
         p1.hp = 100
@@ -112,3 +119,4 @@ def main():
             elif (temp == 4):
                 m1 = Monster("God")
             battle(p1, m1)
+main()
