@@ -7,9 +7,6 @@ class Player:
         self.hp = 100
         self.attack = 15
 
-    def set_name(self, name):
-        self.name = input("What is the player's name?")
-
     def is_alive(self):
         if (self.hp > 0):
             return True
@@ -30,19 +27,18 @@ class Player:
 class Monster:
     def __init__(self, name):
         self.name = name
-        rnd = random.randint(1, 3)
-        if (rnd == 1):
-            self.name = "Goblin"
+        if (name == "Goblin"):
             self.hp = 50
             self.attack = 5
-        elif (rnd == 2):
-            self.type = "Demon"
+        elif (name == "Demon"):
             self.hp = 100
             self.attack = 10
-        elif (rnd == 3):
-            self.type = "God"
-            self.hp = 250
+        elif (name == "Demigod"):
+            self.hp = 150
             self.attack = 15
+        elif (name == "God"):
+            self.hp = 200
+            self.attack = 20
 
     def is_alive(self):
         if (self.hp > 0):
@@ -67,3 +63,21 @@ def battle(player, monster):
         return False
     if (not player.is_alive() and not monster.is_alive()):
         print(f"By some miracle both the player and the {monster.name} died.")
+
+def main():
+    p1 = Player(input("What is the player's name?"))
+    difficulty = input("How hard would you like the game to be? 1 (easiest) -> 10 (hardest)")
+    while (not isinstance(difficulty, float) or not (difficulty <= 10 and difficulty >= 1)):
+        print("Error: The number must be between 1 and 10.")
+        difficulty = input("How hard would you like the game to be? 1 (easiest) -> 10 (hardest)")
+
+    #Generate the rooms randomly using base enemies and weights for healing
+    heal_chance = 50 - ((difficulty - 1) * 4 )
+    room_code = random.randint(1, 100)
+    if (room_code <= heal_chance):
+        p1.heal += 25
+    else:
+        if (difficulty <= 3):
+            battle(p1, )
+
+
