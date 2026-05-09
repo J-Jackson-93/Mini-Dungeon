@@ -62,7 +62,7 @@ def battle(player, monster):
     if (not player.is_alive() and monster.is_alive()):
         return False
     if (not player.is_alive() and not monster.is_alive()):
-        print(f"By some miracle both the player and the {monster.name} died.")
+        print(f"By some miracle both {player.name} and the {monster.name} died.")
 
 def main():
     p1 = Player(input("What is the player's name?"))
