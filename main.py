@@ -51,19 +51,32 @@ class Monster:
 def battle(player, monster):
     while (player.is_alive() and monster.is_alive()):
         if (player.is_alive()):
-            dmg = int(player.attack * ((100 + random.randint(-15,15) / 100)))
+            print(f"{player.name} is attacking {monster.name}.")
+            dmg_multiplier = (100 + random.randint(0, 20)) / 100
+            dmg = int(player.attack * dmg_multiplier)
             monster.hp -= dmg
             print(f"{monster.name} takes {dmg} damage. HP: {monster.hp}")
+            if (not monster.is_alive()):
+                print(f"{player.name} has slain {monster.name}.")
+                break
         if (monster.is_alive()):
-            dmg = int(monster.attack * ((100 + random.randint(-20, 20) / 100)))
+            print(f"{monster.name} is attacking {player.name}.")
+            dmg_multiplier = (100 + random.randint(0, 15)) / 100
+            dmg = int(player.attack * dmg_multiplier)
             player.hp -= dmg
             print(f"{player.name} takes {dmg} damage. HP: {player.hp}")
-    if (player.is_alive() and not monster.is_alive()):
-        return True
-    if (not player.is_alive() and monster.is_alive()):
-        return False
+            if (not player.is_alive()):
+                print(f"{monster.name} has slain {player.name}.")
+                break
+        input()
     if (not player.is_alive() and not monster.is_alive()):
         print(f"By some miracle both {player.name} and the {monster.name} died.")
+
+def has_next(p1):
+    if (p1.hp > 0):
+        return True
+    else:
+        return False
 
 def main():
     p1 = Player(input("What is the player's name?"))
@@ -72,7 +85,12 @@ def main():
         difficulty = int(input("Error: difficulty must be between 1 and 10."))
     room_total = int(input("How many rooms would you like?"))
     for i in range(room_total):
-        generate_room(p1, difficulty)
+        print(f"\nRoom {i+1} of {room_total}")
+        if (has_next(p1)):
+            generate_room(p1, difficulty)
+        elif (not has_next(p1)):
+            print("Game over.")
+            break
 
 def generate_room(p1, difficulty):
     #Generate the rooms randomly using base enemies and weights for healing
