@@ -7,6 +7,9 @@ class Player:
         self.hp = 100
         self.attack = 15
 
+    def set_name(self, name):
+        self.name = input("What is the player's name?")
+
     def is_alive(self):
         if (self.hp > 0):
             return True
@@ -49,3 +52,18 @@ class Monster:
 
     def __str__(self):
         print(f"{self.name} | Type: {self.type} | HP: {self.hp} | Attack: {self.attack}")
+
+def battle(player, monster):
+    while (player.is_alive() and monster.is_alive()):
+        if (player.is_alive()):
+            dmg = player.attack * (random.randint(-15,15) / 100 )
+            print(f"{monster.name} takes {dmg} damage.")
+        if (monster.is_alive()):
+            dmg = monster.attack * (random.randint(-20, 20) / 100)
+            print(f"{player.name} takes {dmg} damage.")
+    if (player.is_alive() and not monster.is_alive()):
+        return True
+    if (not player.is_alive() and monster.is_alive()):
+        return False
+    if (not player.is_alive() and not monster.is_alive()):
+        print(f"By some miracle both the player and the {monster.name} died.")
