@@ -1,52 +1,8 @@
 import random
+from PlayerData import Player
+from MonsterData import Monster
+import Leveling
 
-#Python Class
-class Player:
-    def __init__(self, name):
-        self.name = name
-        self.hp = 100
-        self.attack = 15
-
-    def is_alive(self):
-        if (self.hp > 0):
-            return True
-        else:
-            return False
-
-    def take_damage(self, dmg):
-        self.hp -= dmg
-        print(f"{self.name} takes {dmg} damage.")
-
-    def heal(self, amount):
-        self.hp += amount
-
-    def __str__(self):
-        print(f"{self.name} | HP: {self.hp} | Attack: {self.attack}")
-
-class Monster:
-    def __init__(self, name):
-        self.name = name
-        if (name == "Goblin"):
-            self.hp = 50
-            self.attack = 5
-        elif (name == "Demon"):
-            self.hp = 100
-            self.attack = 10
-        elif (name == "Demigod"):
-            self.hp = 150
-            self.attack = 15
-        elif (name == "God"):
-            self.hp = 200
-            self.attack = 20
-
-    def is_alive(self):
-        if (self.hp > 0):
-            return True
-        else:
-            return False
-
-    def __str__(self):
-        print(f"{self.name} | Type: {self.type} | HP: {self.hp} | Attack: {self.attack}")
 
 def battle(player, monster, difficulty):
     while (player.is_alive() and monster.is_alive()):
@@ -59,6 +15,8 @@ def battle(player, monster, difficulty):
             if not monster.is_alive():
                 print(f"{player.name} has slain {monster.name}.")
                 player.attack += difficulty
+                player.xp += monster.xp
+                level_up(player)
                 break
         if monster.is_alive():
             print(f"{monster.name} is attacking {player.name}.")
@@ -68,6 +26,9 @@ def battle(player, monster, difficulty):
             print(f"{player.name} takes {dmg} damage. HP: {player.hp}")
             if not player.is_alive():
                 print(f"{monster.name} has slain {player.name}.")
+                player.xp -= monster.xp
+                if player.xp < 0:
+                    player.xp = 0
                 break
         input()
     if not player.is_alive() and not monster.is_alive():
@@ -101,9 +62,10 @@ def generate_room(p1, difficulty):
             p1.heal(100 - p1.hp)
         print(f"{p1.name} heals 25 health. HP: {p1.hp}")
     elif room_code == 100:
-        print(f"{p1.name} restored to full health and gained 5 attack points.\n{p1.name} attack: {p1.attack}")
+        print(f"{p1.name} restored to full health and gained 25 experience points.\n{p1.name} experience: {p1.xp}")
         p1.hp = 100
-        p1.attack += 5
+        p1.xp += 25
+        level_up(p1)
     else:
         if difficulty <= 3:
             m1 = Monster("Goblin")
@@ -132,5 +94,12 @@ def generate_room(p1, difficulty):
             elif temp == 4:
                 m1 = Monster("God")
         battle(p1, m1, difficulty)
+
+def level_up(player):
+    if player.xp >= Leveling.xp_by_level[player.level]:
+        player.level += 1
+        player.attack += Leveling.stat_increase[player.level]
+        print(f"{player.name} leveled up! You are now level {player.level} and your attack went up by {Leveling.stat_increase[player.level]}")
+
 
 main()
