@@ -2,4 +2,4 @@ This program is simply a text based dungeon to apply and focus on learning the s
 
 Update 1.0 - 5/15/26
 Added more features to base game. Found ability to link to C++ and will
-work on converting my Dark Mood Game into a C++ and Python Hybrid.
+work on converting Dark Moon into a C++ and Python Hybrid.
