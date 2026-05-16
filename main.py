@@ -1,7 +1,7 @@
 import random
 from PlayerData import Player
 from MonsterData import Monster
-import Leveling
+from Leveling import Leveling
 
 
 def battle(player, monster, difficulty):
@@ -22,8 +22,8 @@ def battle(player, monster, difficulty):
             print(f"{monster.name} is attacking {player.name}.")
             dmg_multiplier = (100 + random.randint(0, 15)) / 100
             dmg = int(monster.attack * dmg_multiplier)
-            player.hp -= dmg
-            print(f"{player.name} takes {dmg} damage. HP: {player.hp}")
+            player.current_hp -= dmg
+            print(f"{player.name} takes {dmg} damage. HP: {player.current_hp}")
             if not player.is_alive():
                 print(f"{monster.name} has slain {player.name}.")
                 player.xp -= monster.xp
@@ -48,22 +48,27 @@ def main():
         else:
             print("Game over.")
             break
+        if i == room_total - 1:
+            winner(p1)
+
+def winner(player):
+    print(player)
 
 def generate_room(p1, difficulty):
     #Generate the rooms randomly using base enemies and weights for healing
     heal_chance = 25 - ((difficulty - 1) * 4 )
     room_code = random.randint(1, 100)
     if room_code <= heal_chance and not room_code == 100:
-        if p1.hp == 100:
+        if p1.current_hp == p1._max_hp:
             print(f"{p1.name} health is full.")
-        elif p1.hp + 25 <= 100:
+        elif p1.current_hp + 25 <= 100:
             p1.heal(25)
-        elif p1.hp + 25 > 100:
-            p1.heal(100 - p1.hp)
-        print(f"{p1.name} heals 25 health. HP: {p1.hp}")
+        elif p1.current_hp + 25 > 100:
+            p1.heal(100 - p1.current_hp)
+        print(f"{p1.name} heals 25 health. HP: {p1.current_hp}")
     elif room_code == 100:
         print(f"{p1.name} restored to full health and gained 25 experience points.\n{p1.name} experience: {p1.xp}")
-        p1.hp = 100
+        p1.current_hp = 100
         p1.xp += 25
         level_up(p1)
     else:
@@ -96,7 +101,7 @@ def generate_room(p1, difficulty):
         battle(p1, m1, difficulty)
 
 def level_up(player):
-    if player.xp >= Leveling.xp_by_level[player.level]:
+    if player.xp >= Leveling.xp_by_level[player.level + 1]:
         player.level += 1
         player.attack += Leveling.stat_increase[player.level]
         print(f"{player.name} leveled up! You are now level {player.level} and your attack went up by {Leveling.stat_increase[player.level]}")
