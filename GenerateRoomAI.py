@@ -8,7 +8,7 @@ import os
 # ─────────────────────────────────────────────
 
 LEARNING_RATE  = 50.0
-EPOCHS         = 500       # more epochs = more training; watch the loss flatten out
+EPOCHS         = 10000       # more epochs = more training; watch the loss flatten out
 REG_STRENGTH   = 0.01      # penalises very large weights; keeps model smooth
 TEMPERATURE    = 0.8       # sampling: lower (e.g. 0.5) = safer/repetitive,
                            #           higher (e.g. 1.5) = more creative/random
