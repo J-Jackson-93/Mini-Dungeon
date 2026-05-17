@@ -132,7 +132,7 @@ def load_model(filepath):
     checkpoint = torch.load(filepath)
 
     # Reconstruct the model object with the saved config
-    model = MakemoreModel(
+    model = Room_Generator_Model(
         vocab       = checkpoint["vocab"],
         block_size  = checkpoint["block_size"],
         embed_dim   = checkpoint["embed_dim"],
