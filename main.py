@@ -82,6 +82,7 @@ def generate_room(p1, difficulty):
         for sentence in generate(model, num_samples=1, temperature=1.2, seed = seed_num):
             print(sentence)
         m1 = generate_monster(difficulty)
+        print(m1.description)
         battle(p1, m1, difficulty)
 
 def level_up(player):
