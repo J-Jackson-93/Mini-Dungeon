@@ -1,4 +1,5 @@
 import random
+from room_generator_model import load_model, generate
 from PlayerData import Player
 from MonsterData import Monster
 from Leveling import Leveling
@@ -58,6 +59,7 @@ def generate_room(p1, difficulty):
     #Generate the rooms randomly using base enemies and weights for healing
     heal_chance = 25 - ((difficulty - 1) * 4 )
     room_code = random.randint(1, 100)
+    #If the room is a healing room and not the special 100 value room
     if room_code <= heal_chance and not room_code == 100:
         if p1.current_hp == p1._max_hp:
             print(f"{p1.name} health is full.")
@@ -66,12 +68,18 @@ def generate_room(p1, difficulty):
         elif p1.current_hp + 25 > 100:
             p1.heal(100 - p1.current_hp)
         print(f"{p1.name} heals 25 health. HP: {p1.current_hp}")
+    #Special room!
     elif room_code == 100:
         print(f"{p1.name} restored to full health and gained 25 experience points.\n{p1.name} experience: {p1.xp}")
         p1.current_hp = 100
         p1.xp += 25
         level_up(p1)
+    #Generate room and make the random description
     else:
+        model, _ = load_model("model_weights.pt")
+        seed_num = random.randint(0, 2**32-1)
+        for sentence in generate(model, num_samples=1, temperature=1.2, seed = seed_num):
+            print(sentence)
         if difficulty <= 3:
             m1 = Monster("Goblin")
         elif difficulty <= 5:

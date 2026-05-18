@@ -173,7 +173,7 @@ def generate(model, num_samples=5, temperature=0.8, max_len=20, seed=2147483647)
         list of strings, one generated sentence per entry
 
     Usage:
-        from makemore_model import load_model, generate
+        from room_generator_model import load_model, generate
         model, _ = load_model("model_weights.pt")
         for sentence in generate(model, num_samples=5, temperature=0.7):
             print(sentence)
