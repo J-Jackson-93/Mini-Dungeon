@@ -158,7 +158,7 @@ def load_model(filepath):
 #  This is the function you'll call from other scripts.
 # ─────────────────────────────────────────────
 
-def generate(model, num_samples=5, temperature=0.8, max_len=20, seed=2147483647):
+def generate(model, num_samples=5, temperature=0.8, max_len=25, seed=2147483647):
     """
     Generate new word sequences from a trained MakemoreModel.
 

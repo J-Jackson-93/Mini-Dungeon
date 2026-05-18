@@ -81,32 +81,7 @@ def generate_room(p1, difficulty):
         seed_num = random.randint(0, 2**32-1)
         for sentence in generate(model, num_samples=1, temperature=1.2, seed = seed_num):
             print(sentence)
-        if difficulty <= 3:
-            m1 = Monster("Goblin")
-        elif difficulty <= 5:
-            temp = random.randint(1, 2)
-            if temp == 1:
-                m1 = Monster("Goblin")
-            elif temp == 2:
-                m1 = Monster("Demon")
-        elif difficulty <= 10:
-            temp = random.randint(1, 3)
-            if temp == 1:
-                m1 = Monster("Goblin")
-            elif temp == 2:
-                m1 = Monster("Demon")
-            elif temp == 3:
-                m1 = Monster("Demigod")
-        elif difficulty == 10:
-            temp = random.randint(1, 4)
-            if temp == 1:
-                m1 = Monster("Goblin")
-            elif temp == 2:
-                m1 = Monster("Demon")
-            elif temp == 3:
-                m1 = Monster("Demigod")
-            elif temp == 4:
-                m1 = Monster("God")
+        m1 = generate_monster(difficulty)
         battle(p1, m1, difficulty)
 
 def level_up(player):
@@ -115,5 +90,34 @@ def level_up(player):
         player.attack += Leveling.stat_increase[player.level]
         print(f"{player.name} leveled up! You are now level {player.level} and your attack went up by {Leveling.stat_increase[player.level]}")
 
+def generate_monster(difficulty):
+    if difficulty <= 3:
+        m1 = Monster("Goblin")
+    elif difficulty <= 5:
+        temp = random.randint(1, 2)
+        if temp == 1:
+            m1 = Monster("Goblin")
+        elif temp == 2:
+            m1 = Monster("Demon")
+    elif difficulty <= 10:
+        temp = random.randint(1, 3)
+        if temp == 1:
+            m1 = Monster("Goblin")
+        elif temp == 2:
+            m1 = Monster("Demon")
+        elif temp == 3:
+            m1 = Monster("Demigod")
+    elif difficulty == 10:
+        temp = random.randint(1, 4)
+        if temp == 1:
+            m1 = Monster("Goblin")
+        elif temp == 2:
+            m1 = Monster("Demon")
+        elif temp == 3:
+            m1 = Monster("Demigod")
+        elif temp == 4:
+            m1 = Monster("God")
+
+    return m1
 
 main()
