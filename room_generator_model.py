@@ -204,6 +204,7 @@ def generate(model, num_samples=5, temperature=0.8, max_len=20, seed=2147483647)
             out.append(model.itos[ix])
             context = context[1:] + [ix]   # slide the window
 
-        results.append(" ".join(out))
+        output = " ".join(out)
+        results.append(output.capitalize())
 
     return results

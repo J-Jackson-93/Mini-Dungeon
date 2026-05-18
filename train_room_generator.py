@@ -12,10 +12,11 @@ from room_generator_model import Room_Generator_Model, save_model, generate
 DATA_FILE = "rooms.txt"
 WEIGHTS_FILE = "model_weights.pt"
 
-BLOCK_SIZE = 3  # words of context the model looks back
-EMBED_DIM = 10  # size of each word's embedding vector
-HIDDEN_SIZE = 200  # neurons in the hidden layer
-EPOCHS = 10000
+BLOCK_SIZE = 7  # words of context the model looks back
+EMBED_DIM = 1 + (BLOCK_SIZE * 3)  # size of each word's embedding vector
+input_dim = BLOCK_SIZE * EMBED_DIM
+HIDDEN_SIZE = 4 * input_dim # neurons in the hidden layer
+EPOCHS = max(10000, HIDDEN_SIZE * 50)
 LEARNING_RATE = 0.1
 REG_STRENGTH = 0.001
 
