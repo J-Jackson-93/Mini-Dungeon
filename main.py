@@ -1,5 +1,6 @@
 import random
 from room_generator_model import load_model, generate
+import healing_rooms
 from PlayerData import Player
 from MonsterData import Monster
 from Leveling import Leveling
