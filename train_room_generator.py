@@ -1,6 +1,5 @@
 import torch
 import torch.nn.functional as F
-import matplotlib.pyplot as plt
 import os
 
 from room_generator_model import Room_Generator_Model, save_model, generate
