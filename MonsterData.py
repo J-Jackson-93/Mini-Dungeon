@@ -47,3 +47,19 @@ def monster_description_generator(monster_name):
 
             description = f"A {goblin_color[color_choice]} goblin wearing {goblin_clothes[clothes_choice]} and weilding {goblin_weapons[weapons_choice]} attacks."
             return description
+
+        case "Demon":
+            # pick a weapon
+            demon_weapons = ["a mace made of shadows", "a hammer adorned with shadowy thorns", "a blood soaked longsword", "a scythe", "a grimoire of the most unholy spells"]
+            demon_size = ["a small shadowy child", "a demon cloaked in shadows as tall as you", "a giant shadowy mass looming over you"]
+
+            # Get the length of each list for the random calc
+            weapons_choice = random.randint(0, len(demon_weapons) - 1)
+            size_choice = random.randint(0, len(demon_size)-1)
+
+            description = f"A {demon_size[size_choice]} weilding {demon_weapons[weapons_choice]} rises from the shadows and attacks."
+            return description
+
+        case "Demigod":
+            #pick a Demigod then load stats
+            demigod_names = ["Yuxi", "Loth"]
